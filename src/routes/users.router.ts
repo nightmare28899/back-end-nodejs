@@ -27,16 +27,21 @@ router.get("/:userId", async (req, res, next) => {
   }
 });
 
-router.post("/register", async (req, res, next) => {
-  try {
-    const { password } = req.body;
-    const hashedPassword = await bcrypt.hash(password, saltRounds);
-    req.body.password = hashedPassword;
+router.post("/register", async (req, res, _next) => {
+  if (req.body.email != "" && req.body.password != "") {
+    const user = await service.findOneByEmail(req.body.email);
+    if (user) {
+      res.status(201).json({ message: "The email already exists" });
+    } else {
+      const { password } = req.body;
+      const hashedPassword = await bcrypt.hash(password, saltRounds);
+      req.body.password = hashedPassword;
 
-    const createdUser = await service.create(req.body);
-    res.json(createdUser);
-  } catch (err) {
-    next(err);
+      const createdUser = await service.create(req.body);
+      res.json(createdUser);
+    }
+  } else {
+    res.status(200).json({ message: "Email or password is empty." });
   }
 });
 
@@ -64,7 +69,9 @@ router.post("/login", async (req, res, _next) => {
         res.status(200).json({ message: "The password is incorrect" });
       }
     } else {
-      res.status(200).json({ message: "The email is incorrect or does not exist" });
+      res
+        .status(200)
+        .json({ message: "The email is incorrect or does not exist" });
     }
   } else {
     res.status(200).json({ message: "Email or password is empty." });

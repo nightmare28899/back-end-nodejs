@@ -37,16 +37,22 @@ router.get("/:userId", (req, res, next) => __awaiter(void 0, void 0, void 0, fun
         next(err);
     }
 }));
-router.post("/register", (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const { password } = req.body;
-        const hashedPassword = yield bcrypt.hash(password, saltRounds);
-        req.body.password = hashedPassword;
-        const createdUser = yield service.create(req.body);
-        res.json(createdUser);
+router.post("/register", (req, res, _next) => __awaiter(void 0, void 0, void 0, function* () {
+    if (req.body.email != "" && req.body.password != "") {
+        const user = yield service.findOneByEmail(req.body.email);
+        if (user) {
+            res.status(201).json({ message: "The email already exists" });
+        }
+        else {
+            const { password } = req.body;
+            const hashedPassword = yield bcrypt.hash(password, saltRounds);
+            req.body.password = hashedPassword;
+            const createdUser = yield service.create(req.body);
+            res.json(createdUser);
+        }
     }
-    catch (err) {
-        next(err);
+    else {
+        res.status(200).json({ message: "Email or password is empty." });
     }
 }));
 router.post("/login", (req, res, _next) => __awaiter(void 0, void 0, void 0, function* () {
@@ -72,7 +78,9 @@ router.post("/login", (req, res, _next) => __awaiter(void 0, void 0, void 0, fun
             }
         }
         else {
-            res.status(200).json({ message: "The email is incorrect or does not exist" });
+            res
+                .status(200)
+                .json({ message: "The email is incorrect or does not exist" });
         }
     }
     else {
