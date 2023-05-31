@@ -16,6 +16,9 @@ const express_1 = __importDefault(require("express"));
 const UsersService = require("./../services/user.service");
 const router = express_1.default.Router();
 const service = new UsersService();
+const bcrypt = require("bcrypt");
+const saltRounds = 10;
+const jwt = require("jsonwebtoken");
 router.get("/", (_req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const users = yield service.find();
@@ -34,13 +37,46 @@ router.get("/:userId", (req, res, next) => __awaiter(void 0, void 0, void 0, fun
         next(err);
     }
 }));
-router.post("/", (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+router.post("/register", (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
+        const { password } = req.body;
+        const hashedPassword = yield bcrypt.hash(password, saltRounds);
+        req.body.password = hashedPassword;
         const createdUser = yield service.create(req.body);
         res.json(createdUser);
     }
     catch (err) {
         next(err);
+    }
+}));
+router.post("/login", (req, res, _next) => __awaiter(void 0, void 0, void 0, function* () {
+    if (req.body.email != "" && req.body.password != "") {
+        const user = yield service.findOneByEmail(req.body.email);
+        if (user) {
+            let jwtSecretKey = process.env.JWT_SECRET_KEY;
+            let data = {
+                time: Date(),
+                userId: 12,
+            };
+            const token = jwt.sign(data, jwtSecretKey);
+            let obj = {
+                _token: token,
+                user: user,
+            };
+            const result = yield bcrypt.compare(req.body.password, user.password);
+            if (result) {
+                res.send(obj);
+            }
+            else {
+                res.status(200).json({ message: "The password is incorrect" });
+            }
+        }
+        else {
+            res.status(200).json({ message: "The email is incorrect or does not exist" });
+        }
+    }
+    else {
+        res.status(200).json({ message: "Email or password is empty." });
     }
 }));
 router.put("/:userId", (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {

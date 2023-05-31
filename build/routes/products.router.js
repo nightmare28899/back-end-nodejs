@@ -18,6 +18,7 @@ const router = express_1.default.Router();
 const service = new ProductsService();
 router.get("/", (_req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
+        /* const products = getPagingData(await service.find(), _req.query.page, _req.query.limit); */
         const products = yield service.find();
         res.json(products);
     }
@@ -28,15 +29,6 @@ router.get("/", (_req, res, next) => __awaiter(void 0, void 0, void 0, function*
 router.get("/:productId", (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const product = yield service.findOne(Number(req.params.productId));
-        res.json(product);
-    }
-    catch (err) {
-        next(err);
-    }
-}));
-router.get("/:search", (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const product = yield service.search(req.params.search);
         res.json(product);
     }
     catch (err) {
@@ -70,4 +62,11 @@ router.delete("/:productId", (req, res, next) => __awaiter(void 0, void 0, void 
         next(err);
     }
 }));
+/* const getPagingData = (data: any, page: any, limit: any) => {
+  const { count: totalItems, rows: tutorials } = data;
+  const currentPage = page ? +page : 0;
+  const totalPages = Math.ceil(totalItems / limit);
+
+  return { totalItems, tutorials, totalPages, currentPage };
+}; */
 module.exports = router;

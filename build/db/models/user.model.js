@@ -12,27 +12,31 @@ const UserSchema = {
     },
     email: {
         type: sequelize_1.DataTypes.STRING,
-        allowNull: false,
         field: 'email',
-        unique: true
+        unique: true,
+        allowNull: false,
+        validate: {
+            isEmail: true
+        }
     },
     password: {
         type: sequelize_1.DataTypes.STRING,
+        field: 'password',
         allowNull: false,
-        field: 'password'
     },
 };
 class User extends sequelize_1.Model {
-    /* static associate(models: any) {
+    static associate(models) {
         User.hasMany(models.Product, {
             foreignKey: 'user_id',
             as: 'products'
         });
-    } */
+    }
     static config(sequelize) {
         return {
             sequelize,
             tableName: USER_TABLE,
+            modelName: 'User',
             timestamps: true
         };
     }

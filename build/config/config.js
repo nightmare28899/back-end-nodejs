@@ -10,4 +10,6 @@ exports.config = {
     dbHost: process.env.DB_HOST,
     dbPort: process.env.DB_PORT,
     dbName: process.env.DB_NAME,
+    jwtSecretKey: process.env.JWT_SECRET_KEY,
+    tokenHeaderKey: process.env.TOKEN_HEADER_KEY,
 };

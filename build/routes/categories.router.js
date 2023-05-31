@@ -43,7 +43,7 @@ router.post("/", (req, res, next) => __awaiter(void 0, void 0, void 0, function*
         next(err);
     }
 }));
-router.put("/:categoryId", (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+router.patch("/:categoryId", (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const updatedCategory = yield service.update(Number(req.params.categoryId), req.body);
         res.json(updatedCategory);

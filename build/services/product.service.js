@@ -9,29 +9,26 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const sequelize_1 = require("sequelize");
-const { models } = require('./../libs/sequelize');
+const { models } = require("./../libs/sequelize");
 class ProductsService {
-    constructor() { }
+    constructor() {
+        this.getPagingData = (data, page, limit) => {
+            const { count: totalItems, rows: tutorials } = data;
+            const currentPage = page ? +page : 0;
+            const totalPages = Math.ceil(totalItems / limit);
+            return { totalItems, tutorials, totalPages, currentPage };
+        };
+    }
     find() {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield models.Product.findAll();
+            return yield models.Product.findAll({
+                order: [["id", "DESC"]],
+            });
         });
     }
     findOne(id) {
         return __awaiter(this, void 0, void 0, function* () {
             return yield models.Product.findByPk(id);
-        });
-    }
-    search(search) {
-        return __awaiter(this, void 0, void 0, function* () {
-            return yield models.Product.findAll({
-                where: {
-                    name: {
-                        [sequelize_1.Op.like]: `%${search}%`
-                    }
-                }
-            });
         });
     }
     create(data) {

@@ -14,7 +14,7 @@ class CategoriesService {
     constructor() { }
     find() {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield models.Category.findAll();
+            return yield models.Category.findAll({ order: [['id', 'DESC']], /*  limit: 10, offset: 1 */ });
         });
     }
     findOne(id) {

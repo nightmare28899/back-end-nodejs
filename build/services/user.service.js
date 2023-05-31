@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const { models } = require('./../libs/sequelize');
+const { models } = require("./../libs/sequelize");
 class UsersService {
     constructor() { }
     find() {
@@ -36,6 +36,11 @@ class UsersService {
     delete(id) {
         return __awaiter(this, void 0, void 0, function* () {
             return yield models.User.destroy({ where: { id } });
+        });
+    }
+    findOneByEmail(email) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield models.User.findOne({ where: { email } });
         });
     }
 }
