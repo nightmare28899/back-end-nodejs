@@ -13,13 +13,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
-const ProductsService = require("./../services/product.service");
+const AddressService = require("./../services/address.service");
 const router = express_1.default.Router();
-const service = new ProductsService();
+const service = new AddressService();
 router.get("/", (_req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const products = yield service.find();
-        res.json(products);
+        const address = yield service.find();
+        res.json(address);
     }
     catch (err) {
         next(err);
@@ -27,8 +27,8 @@ router.get("/", (_req, res, next) => __awaiter(void 0, void 0, void 0, function*
 }));
 router.get("/:user_id", (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const product = yield service.findAll(Number(req.params.user_id));
-        res.json(product);
+        const address = yield service.findOne(Number(req.params.user_id));
+        res.json(address);
     }
     catch (err) {
         next(err);
@@ -36,26 +36,26 @@ router.get("/:user_id", (req, res, next) => __awaiter(void 0, void 0, void 0, fu
 }));
 router.post("/", (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const createdProduct = yield service.create(req.body);
-        res.json(createdProduct);
+        const createdAddress = yield service.create(req.body);
+        res.json(createdAddress);
     }
     catch (err) {
         next(err);
     }
 }));
-router.patch("/:productId", (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+router.patch("/:addressId", (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const updatedProduct = yield service.update(Number(req.params.productId), req.body);
-        res.json(updatedProduct);
+        const updatedAddress = yield service.update(Number(req.params.addressId), req.body);
+        res.json(updatedAddress);
     }
     catch (err) {
         next(err);
     }
 }));
-router.delete("/:productId", (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+router.delete("/:addressId", (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const deletedProduct = yield service.delete(Number(req.params.productId));
-        res.json(deletedProduct);
+        const deletedAddress = yield service.delete(Number(req.params.addressId));
+        res.json(deletedAddress);
     }
     catch (err) {
         next(err);

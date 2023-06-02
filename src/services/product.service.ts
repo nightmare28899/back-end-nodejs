@@ -10,11 +10,13 @@ class ProductsService {
     });
   }
 
-  async findOne(id: number) {
-    return await models.Product.findByPk(id);
+  async findAll(user_id: number) {
+    return await models.Product.findAll({ where: { user_id } });
   }
 
-  async create(data: object) {
+  async create(data: any) {
+    const idProduct = await models.Product.count() != 0 ? (data["id"] = await models.Product.count() + 1) : 1;
+    data["id"] = idProduct;
     return await models.Product.create(data);
   }
 

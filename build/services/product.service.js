@@ -26,13 +26,15 @@ class ProductsService {
             });
         });
     }
-    findOne(id) {
+    findAll(user_id) {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield models.Product.findByPk(id);
+            return yield models.Product.findAll({ where: { user_id } });
         });
     }
     create(data) {
         return __awaiter(this, void 0, void 0, function* () {
+            const idProduct = (yield models.Product.count()) != 0 ? (data["id"] = (yield models.Product.count()) + 1) : 1;
+            data["id"] = idProduct;
             return yield models.Product.create(data);
         });
     }

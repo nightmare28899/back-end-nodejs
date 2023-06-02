@@ -7,12 +7,18 @@ class CategoriesService {
     async find() {
         return await models.Category.findAll({ order: [['id', 'DESC']],/*  limit: 10, offset: 1 */ });
     }
-    
+
     async findOne(id: number) {
-        return await models.Category.findByPk(id);
+        return await models.Category.findOne({ where: { id } });
     }
     
-    async create(data: object) {
+    async findAll(user_id: number) {
+        return await models.Category.findAll({ where: { user_id }, order: [['id', 'DESC']] });
+    }
+    
+    async create(data: any) {
+        const idCategory = await models.Category.count() != 0 ? data['id'] = await models.Category.count() + 1 : 1;
+        data['id'] = idCategory;
         return await models.Category.create(data);
     }
     

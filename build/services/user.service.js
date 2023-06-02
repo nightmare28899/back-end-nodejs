@@ -43,5 +43,15 @@ class UsersService {
             return yield models.User.findOne({ where: { email } });
         });
     }
+    findOneByUsername(username) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield models.User.findOne({ where: { username } });
+        });
+    }
+    findOneByToken(remember_token) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield models.User.findOne({ where: { remember_token } });
+        });
+    }
 }
 module.exports = UsersService;

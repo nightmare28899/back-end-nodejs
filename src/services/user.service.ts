@@ -28,6 +28,14 @@ class UsersService {
   async findOneByEmail(email: string) {
     return await models.User.findOne({ where: { email } });
   }
+
+  async findOneByUsername(username: string) {
+    return await models.User.findOne({ where: { username } });
+  }
+
+  async findOneByToken(remember_token: string) {
+    return await models.User.findOne({ where: { remember_token } });
+  }
 }
 
 module.exports = UsersService;

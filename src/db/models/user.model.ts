@@ -9,11 +9,20 @@ const UserSchema = {
         allowNull: false,
         field: 'id'
     },
+    username: {
+        type: DataTypes.STRING,
+        field: 'username',
+        allowNull: true,
+        unique: true,
+        validate: {
+            len: [3, 20]
+        }
+    },
     email: {
         type: DataTypes.STRING,
         field: 'email',
         unique: true,
-        allowNull: false,
+        allowNull: true,
         validate: {
             isEmail: true
         }
@@ -21,7 +30,12 @@ const UserSchema = {
     password: {
         type: DataTypes.STRING,
         field: 'password',
-        allowNull: false,
+        allowNull: true,
+    },
+    remember_token: {
+        type: DataTypes.STRING,
+        field: 'remember_token',
+        allowNull: true,
     },
 };
 

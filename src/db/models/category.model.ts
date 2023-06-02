@@ -9,6 +9,11 @@ const CategorySchema = {
         allowNull: false,
         field: 'id'
     },
+    user_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        field: 'user_id'
+    },
     categoryName: {
         type: DataTypes.STRING,
         allowNull: false,
@@ -22,6 +27,11 @@ class Category extends Model {
             foreignKey: 'category_id',
             as: 'products'
         });
+
+        Category.hasMany(models.SubCategory, {
+            foreignKey: 'user_id',
+            as: 'user'
+        }); 
     }
 
     static config(sequelize: Sequelize) {

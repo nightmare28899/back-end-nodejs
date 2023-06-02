@@ -25,9 +25,27 @@ router.get("/", (_req, res, next) => __awaiter(void 0, void 0, void 0, function*
         next(err);
     }
 }));
-router.get("/:categoryId", (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+router.get("/by_id/:id", (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const category = yield service.findOne(Number(req.params.categoryId));
+        const category = yield service.findOne(Number(req.params.id));
+        res.json(category);
+    }
+    catch (err) {
+        next(err);
+    }
+}));
+router.get("/by_category/:user_id", (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const category = yield service.findAll(Number(req.params.user_id));
+        res.json(category);
+    }
+    catch (err) {
+        next(err);
+    }
+}));
+router.get("/by_userid/:user_id", (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const category = yield service.findAll(Number(req.params.user_id));
         res.json(category);
     }
     catch (err) {

@@ -14,9 +14,28 @@ router.get("/", async (_req, res, next) => {
   }
 });
 
-router.get("/:categoryId", async (req, res, next) => {
+router.get("/by_id/:id", async (req, res, next) => {
   try {
-    const category = await service.findOne(Number(req.params.categoryId));
+    const category = await service.findOne(Number(req.params.id));
+    res.json(category);
+  } catch (err) {
+    next(err);
+  }
+});
+
+router.get("/by_category/:user_id", async (req, res, next) => {
+  try {
+    const category = await service.findAll(Number(req.params.user_id));
+    res.json(category);
+  } catch (err) {
+    next(err);
+  }
+});
+
+
+router.get("/by_userid/:user_id", async (req, res, next) => {
+  try {
+    const category = await service.findAll(Number(req.params.user_id));
     res.json(category);
   } catch (err) {
     next(err);

@@ -10,40 +10,33 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const { models } = require('./../libs/sequelize');
-class CategoriesService {
+class AddressService {
     constructor() { }
     find() {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield models.Category.findAll({ order: [['id', 'DESC']], /*  limit: 10, offset: 1 */ });
+            return yield models.Address.findAll({ order: [['id', 'DESC']] });
         });
     }
-    findOne(id) {
+    findOne(user_id) {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield models.Category.findOne({ where: { id } });
-        });
-    }
-    findAll(user_id) {
-        return __awaiter(this, void 0, void 0, function* () {
-            return yield models.Category.findAll({ where: { user_id }, order: [['id', 'DESC']] });
+            return yield models.Address.findOne({ where: { user_id } });
         });
     }
     create(data) {
         return __awaiter(this, void 0, void 0, function* () {
-            const idCategory = (yield models.Category.count()) != 0 ? data['id'] = (yield models.Category.count()) + 1 : 1;
-            data['id'] = idCategory;
-            return yield models.Category.create(data);
+            return yield models.Address.create(data);
         });
     }
-    update(id, changes) {
+    update(user_id, changes) {
         return __awaiter(this, void 0, void 0, function* () {
-            const category = yield models.Category.findByPk(id);
-            return yield category.update(changes);
+            const address = yield models.Address.findOne({ where: { user_id } });
+            return yield address.update(changes);
         });
     }
     delete(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield models.Category.destroy({ where: { id } });
+            return yield models.Address.destroy({ where: { id } });
         });
     }
 }
-module.exports = CategoriesService;
+module.exports = AddressService;

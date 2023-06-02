@@ -10,6 +10,11 @@ const ProductSchema = {
         allowNull: false,
         field: 'id'
     },
+    user_id: {
+        type: sequelize_1.DataTypes.INTEGER,
+        allowNull: false,
+        field: 'user_id'
+    },
     name: {
         type: sequelize_1.DataTypes.STRING,
         allowNull: false,
@@ -46,6 +51,10 @@ class Product extends sequelize_1.Model {
         Product.belongsTo(models.Category, {
             foreignKey: 'category_id',
             as: 'category'
+        });
+        Product.hasMany(models.OrderDetail, {
+            foreignKey: 'user_id',
+            as: 'user'
         });
     }
     static config(sequelize) {

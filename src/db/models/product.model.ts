@@ -9,6 +9,11 @@ const ProductSchema = {
         allowNull: false,
         field: 'id'
     },
+    user_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        field: 'user_id'
+    },
     name: {
         type: DataTypes.STRING,
         allowNull: false,
@@ -46,6 +51,11 @@ class Product extends Model {
         Product.belongsTo(models.Category, {
             foreignKey: 'category_id',
             as: 'category'
+        });
+
+        Product.hasMany(models.OrderDetail, {
+            foreignKey: 'user_id',
+            as: 'user'
         });
     }
 

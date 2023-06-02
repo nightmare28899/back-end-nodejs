@@ -7,7 +7,6 @@ const service = new ProductsService();
 
 router.get("/", async (_req, res, next) => {
   try {
-    /* const products = getPagingData(await service.find(), _req.query.page, _req.query.limit); */
     const products =  await service.find()
     res.json(products);
   } catch (err) {
@@ -15,9 +14,9 @@ router.get("/", async (_req, res, next) => {
   }
 });
 
-router.get("/:productId", async (req, res, next) => {
+router.get("/:user_id", async (req, res, next) => {
   try {
-    const product = await service.findOne(Number(req.params.productId));
+    const product = await service.findAll(Number(req.params.user_id));
     res.json(product);
   } catch (err) {
     next(err);
@@ -50,14 +49,5 @@ router.delete("/:productId", async (req, res, next) => {
     next(err);
   }
 });
-
-/* const getPagingData = (data: any, page: any, limit: any) => {
-  const { count: totalItems, rows: tutorials } = data;
-  const currentPage = page ? +page : 0;
-  const totalPages = Math.ceil(totalItems / limit);
-
-  return { totalItems, tutorials, totalPages, currentPage };
-}; */
-
 
 module.exports = router;

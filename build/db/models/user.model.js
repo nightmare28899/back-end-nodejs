@@ -10,11 +10,20 @@ const UserSchema = {
         allowNull: false,
         field: 'id'
     },
+    username: {
+        type: sequelize_1.DataTypes.STRING,
+        field: 'username',
+        allowNull: true,
+        unique: true,
+        validate: {
+            len: [3, 20]
+        }
+    },
     email: {
         type: sequelize_1.DataTypes.STRING,
         field: 'email',
         unique: true,
-        allowNull: false,
+        allowNull: true,
         validate: {
             isEmail: true
         }
@@ -22,7 +31,12 @@ const UserSchema = {
     password: {
         type: sequelize_1.DataTypes.STRING,
         field: 'password',
-        allowNull: false,
+        allowNull: true,
+    },
+    remember_token: {
+        type: sequelize_1.DataTypes.STRING,
+        field: 'remember_token',
+        allowNull: true,
     },
 };
 class User extends sequelize_1.Model {

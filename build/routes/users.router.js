@@ -38,27 +38,37 @@ router.get("/:userId", (req, res, next) => __awaiter(void 0, void 0, void 0, fun
     }
 }));
 router.post("/register", (req, res, _next) => __awaiter(void 0, void 0, void 0, function* () {
-    if (req.body.email != "" && req.body.password != "") {
+    if (req.body.username != "" &&
+        req.body.email != "" &&
+        req.body.password != "") {
+        const username = yield service.findOneByUsername(req.body.username);
         const user = yield service.findOneByEmail(req.body.email);
-        if (user) {
-            res.status(201).json({ message: "The email already exists" });
+        if (username) {
+            res.status(200).json({ message: "The username already exists" });
         }
         else {
-            const { password } = req.body;
-            const hashedPassword = yield bcrypt.hash(password, saltRounds);
-            req.body.password = hashedPassword;
-            const createdUser = yield service.create(req.body);
-            res.json(createdUser);
+            if (user) {
+                res.status(201).json({ message: "The email already exists" });
+            }
+            else {
+                const { password } = req.body;
+                const hashedPassword = yield bcrypt.hash(password, saltRounds);
+                req.body.password = hashedPassword;
+                const createdUser = yield service.create(req.body);
+                res.json(createdUser);
+            }
         }
     }
     else {
-        res.status(200).json({ message: "Email or password is empty." });
+        res.status(200).json({ message: "Email, Username or Password is empty." });
     }
 }));
 router.post("/login", (req, res, _next) => __awaiter(void 0, void 0, void 0, function* () {
-    if (req.body.email != "" && req.body.password != "") {
+    if (req.body.username != "" ||
+        (req.body.email != "" && req.body.password != "")) {
+        const username = yield service.findOneByUsername(req.body.username);
         const user = yield service.findOneByEmail(req.body.email);
-        if (user) {
+        if (user || username) {
             let jwtSecretKey = process.env.JWT_SECRET_KEY;
             let data = {
                 time: Date(),
@@ -67,10 +77,12 @@ router.post("/login", (req, res, _next) => __awaiter(void 0, void 0, void 0, fun
             const token = jwt.sign(data, jwtSecretKey);
             let obj = {
                 _token: token,
-                user: user,
+                user: user || username,
             };
-            const result = yield bcrypt.compare(req.body.password, user.password);
+            const pass = user ? user.password : username.password;
+            const result = yield bcrypt.compare(req.body.password, pass);
             if (result) {
+                service.update(obj.user.id, { remember_token: token });
                 res.send(obj);
             }
             else {
@@ -78,13 +90,13 @@ router.post("/login", (req, res, _next) => __awaiter(void 0, void 0, void 0, fun
             }
         }
         else {
-            res
-                .status(200)
-                .json({ message: "The email is incorrect or does not exist" });
+            res.status(200).json({
+                message: "The email or username is incorrect or does not exist",
+            });
         }
     }
     else {
-        res.status(200).json({ message: "Email or password is empty." });
+        res.status(200).json({ message: "Username, email or password is empty." });
     }
 }));
 router.put("/:userId", (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
@@ -100,6 +112,20 @@ router.delete("/:userId", (req, res, next) => __awaiter(void 0, void 0, void 0, 
     try {
         const deletedUser = yield service.delete(Number(req.params.userId));
         res.json(deletedUser);
+    }
+    catch (err) {
+        next(err);
+    }
+}));
+router.post("/validateToken", (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const user = yield service.findOneByToken(req.body.remember_token);
+        if (user) {
+            res.json(user);
+        }
+        else {
+            res.status(200).json({ message: "The token is invalid" });
+        }
     }
     catch (err) {
         next(err);
