@@ -8,7 +8,7 @@ const port = process.env.PORT || 3000;
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
-const whitelist = ['http://127.0.0.1:5500', 'http://localhost:4200', 'http://192.168.1.226:4200'];
+const whitelist = ['http://127.0.0.1:5500', 'http://localhost:4200', 'http://192.168.1.226:4200', 'http://localhost:5173'];
 const options = {
     origin: (origin: any, callback: any) => {
         if (whitelist.includes(origin) || !origin) {

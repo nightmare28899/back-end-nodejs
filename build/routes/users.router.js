@@ -8,17 +8,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-const express_1 = __importDefault(require("express"));
-const UsersService = require("./../services/user.service");
-const router = express_1.default.Router();
-const service = new UsersService();
+const express_1 = require("express");
 const bcrypt = require("bcrypt");
-const saltRounds = 10;
 const jwt = require("jsonwebtoken");
+const UsersService = require("./../services/user.service");
+const router = (0, express_1.Router)();
+const service = new UsersService();
+const saltRounds = 10;
 router.get("/", (_req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const users = yield service.find();

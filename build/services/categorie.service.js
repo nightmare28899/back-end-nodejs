@@ -14,7 +14,7 @@ class CategoriesService {
     constructor() { }
     find() {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield models.Category.findAll({ order: [['id', 'DESC']], /*  limit: 10, offset: 1 */ });
+            return yield models.Category.findAll({ order: [['id', 'DESC']] });
         });
     }
     findOne(id) {
@@ -29,8 +29,9 @@ class CategoriesService {
     }
     create(data) {
         return __awaiter(this, void 0, void 0, function* () {
-            const idCategory = (yield models.Category.count()) != 0 ? data['id'] = (yield models.Category.count()) + 1 : 1;
-            data['id'] = idCategory;
+            const idCategory = yield models.Category.findOne({ order: [['id', 'DESC']] });
+            data['id'] = idCategory ? idCategory.id + 1 : 1;
+            console.log(data);
             return yield models.Category.create(data);
         });
     }

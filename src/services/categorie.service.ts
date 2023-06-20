@@ -5,7 +5,7 @@ class CategoriesService {
     constructor() {}
     
     async find() {
-        return await models.Category.findAll({ order: [['id', 'DESC']],/*  limit: 10, offset: 1 */ });
+        return await models.Category.findAll({ order: [['id', 'DESC']] });
     }
 
     async findOne(id: number) {
@@ -17,8 +17,9 @@ class CategoriesService {
     }
     
     async create(data: any) {
-        const idCategory = await models.Category.count() != 0 ? data['id'] = await models.Category.count() + 1 : 1;
-        data['id'] = idCategory;
+        const idCategory = await models.Category.findOne({ order: [['id', 'DESC']] });
+        data['id'] = idCategory ? idCategory.id + 1 : 1;
+        console.log(data);
         return await models.Category.create(data);
     }
     

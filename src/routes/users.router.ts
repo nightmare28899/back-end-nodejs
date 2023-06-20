@@ -1,13 +1,11 @@
-import express from "express";
-
+import { Router } from "express";
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 const UsersService = require("./../services/user.service");
 
-const router = express.Router();
+const router = Router();
 const service = new UsersService();
-const bcrypt = require("bcrypt");
 const saltRounds = 10;
-
-const jwt = require("jsonwebtoken");
 
 router.get("/", async (_req, res, next) => {
   try {

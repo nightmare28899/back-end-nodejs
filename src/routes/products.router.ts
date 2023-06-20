@@ -7,7 +7,7 @@ const service = new ProductsService();
 
 router.get("/", async (_req, res, next) => {
   try {
-    const products =  await service.find()
+    const products = await service.find();
     res.json(products);
   } catch (err) {
     next(err);
@@ -34,7 +34,10 @@ router.post("/", async (req, res, next) => {
 
 router.patch("/:productId", async (req, res, next) => {
   try {
-    const updatedProduct = await service.update(Number(req.params.productId), req.body);
+    const updatedProduct = await service.update(
+      Number(req.params.productId),
+      req.body
+    );
     res.json(updatedProduct);
   } catch (err) {
     next(err);

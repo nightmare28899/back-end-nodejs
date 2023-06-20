@@ -32,7 +32,6 @@ router.get("/by_category/:user_id", async (req, res, next) => {
   }
 });
 
-
 router.get("/by_userid/:user_id", async (req, res, next) => {
   try {
     const category = await service.findAll(Number(req.params.user_id));
@@ -53,7 +52,10 @@ router.post("/", async (req, res, next) => {
 
 router.patch("/:categoryId", async (req, res, next) => {
   try {
-    const updatedCategory = await service.update(Number(req.params.categoryId), req.body);
+    const updatedCategory = await service.update(
+      Number(req.params.categoryId),
+      req.body
+    );
     res.json(updatedCategory);
   } catch (err) {
     next(err);

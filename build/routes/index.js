@@ -4,16 +4,16 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
-const productsRouter = require('./products.router');
-const usersRouter = require('./users.router');
-const categoriesRouter = require('./categories.router');
-const addressRouter = require('./address.router');
+const productsRouter = require("./products.router");
+const usersRouter = require("./users.router");
+const categoriesRouter = require("./categories.router");
+const addressRouter = require("./address.router");
 function routes(app) {
     const router = express_1.default.Router();
-    app.use('/api/v1', router);
-    router.use('/products', productsRouter);
-    router.use('/users', usersRouter);
-    router.use('/categories', categoriesRouter);
-    router.use('/address', addressRouter);
+    app.use("/api/v1", router);
+    router.use("/products", productsRouter);
+    router.use("/users", usersRouter);
+    router.use("/categories", categoriesRouter);
+    router.use("/address", addressRouter);
 }
 module.exports = routes;
